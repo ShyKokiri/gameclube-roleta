@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Roleta Sorteadora</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🎯 Roleta Sorteadora</h1>
+
+<div class="layout">
+  <div class="wheel-area">
+    <div class="wheel-wrap">
+      <div class="pointer"></div>
+      <canvas id="wheelCanvas" width="640" height="640"></canvas>
+      <div class="hub"></div>
+    </div>
+    <button id="spinBtn">GIRAR</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="panel">
+    <h2>Opções da roleta</h2>
+    <div id="optionsList"></div>
+    <button class="addBtn" id="addOptionBtn">+ adicionar opção</button>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -7,7 +7,6 @@ const ctx = canvas.getContext('2d');
 const optionsListEl = document.getElementById('optionsList');
 const spinBtn = document.getElementById('spinBtn');
 const resultEl = document.getElementById('result');
-const removeOnResultEl = document.getElementById('removeOnResult');
 
 let currentRotation = 0; // degrees, accumulated
 let spinning = false;
@@ -144,12 +143,7 @@ function spin() {
     spinBtn.disabled = false;
     const winner = options[winnerIndex];
     resultEl.textContent = '🎉 ' + winner;
-
-    if (removeOnResultEl.checked && options.length > 2) {
-      options.splice(winnerIndex, 1);
-      renderOptionsList();
-      drawWheel();
-    }
+    resultEl.style.color = COLORS[winnerIndex % COLORS.length];
   }, 5600);
 }
 

@@ -78,7 +78,7 @@ h1 {
   font-size: 1.05rem;
   font-weight: 700;
   color: #1a1a1a;
-  background: linear-gradient(135deg, var(--accent2), #ffb347);
+  background: linear-gradient(135deg, #ad09df, #424242);
   border: none;
   border-radius: 30px;
   cursor: pointer;

@@ -4,57 +4,29 @@ let options = ['Opção 1', 'Opção 2', 'Opção 3', 'Opção 4'];
 
 const canvas = document.getElementById('wheelCanvas');
 const ctx = canvas.getContext('2d');
-const optionsListEl = document.getElementById('optionsList');
+const optionsTextEl = document.getElementById('optionsText');
 const spinBtn = document.getElementById('spinBtn');
 const resultEl = document.getElementById('result');
 
 let currentRotation = 0; // degrees, accumulated
 let spinning = false;
 
-function renderOptionsList() {
-  optionsListEl.innerHTML = '';
-  options.forEach((opt, i) => {
-    const row = document.createElement('div');
-    row.className = 'option-row';
-
-    const swatch = document.createElement('div');
-    swatch.className = 'swatch';
-    swatch.style.background = COLORS[i % COLORS.length];
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = opt;
-    input.addEventListener('input', (e) => {
-      options[i] = e.target.value;
-      drawWheel();
-    });
-
-    const removeBtn = document.createElement('button');
-    removeBtn.className = 'removeBtn';
-    removeBtn.textContent = '✕';
-    removeBtn.title = 'remover';
-    removeBtn.addEventListener('click', () => {
-      if (options.length <= 2) {
-        alert('A roleta precisa de pelo menos 2 opções.');
-        return;
-      }
-      options.splice(i, 1);
-      renderOptionsList();
-      drawWheel();
-    });
-
-    row.appendChild(swatch);
-    row.appendChild(input);
-    row.appendChild(removeBtn);
-    optionsListEl.appendChild(row);
-  });
+// Transforma o texto do textarea em um array de opções.
+// Aceita tanto "Item 1" puro quanto "- Item 1" (remove o "-" do começo da linha, se tiver).
+function parseOptionsFromText(text) {
+  return text
+    .split('\n')                              // quebra por linha
+    .map(line => line.replace(/^\s*[-*]\s*/, '').trim()) // tira "- " ou "* " do início, e espaços nas pontas
+    .filter(line => line.length > 0);          // descarta linhas vazias
 }
 
-document.getElementById('addOptionBtn').addEventListener('click', () => {
-  options.push('Nova opção');
-  renderOptionsList();
+function syncOptionsFromTextarea() {
+  const parsed = parseOptionsFromText(optionsTextEl.value);
+  options = parsed.length > 0 ? parsed : options; // não deixa a roleta ficar sem nenhuma opção
   drawWheel();
-});
+}
+
+optionsTextEl.addEventListener('input', syncOptionsFromTextarea);
 
 function drawWheel() {
   const size = canvas.width;
@@ -113,7 +85,12 @@ function secureRandomInt(maxExclusive) {
 }
 
 function spin() {
-  if (spinning || options.length < 2) return;
+  if (spinning) return;
+  syncOptionsFromTextarea(); // garante que pega o texto mais recente antes de girar
+  if (options.length < 2) {
+    alert('A roleta precisa de pelo menos 2 opções.');
+    return;
+  }
   spinning = true;
   spinBtn.disabled = true;
   resultEl.textContent = '';
@@ -132,7 +109,7 @@ function spin() {
   const drawAngle = winnerIndex * sliceAngleDeg + offsetInSlice;
   const targetAngle = ((270 - drawAngle) % 360 + 360) % 360;
 
-  const extraSpins = 6 + secureRandomInt(4); // 6 a 9 voltas completas, também aleatório
+  const extraSpins = 25 + secureRandomInt(15);
   const finalRotation = currentRotation + extraSpins * 360 + ((targetAngle - (currentRotation % 360) + 360) % 360);
 
   canvas.style.transform = `rotate(${finalRotation}deg)`;
@@ -144,10 +121,10 @@ function spin() {
     const winner = options[winnerIndex];
     resultEl.textContent = '🎉 ' + winner;
     resultEl.style.color = COLORS[winnerIndex % COLORS.length];
-  }, 5600);
+  }, 30200);
 }
 
 spinBtn.addEventListener('click', spin);
 
-renderOptionsList();
-drawWheel();
+optionsTextEl.value = options.map(o => '- ' + o).join('\n');
+syncOptionsFromTextarea();

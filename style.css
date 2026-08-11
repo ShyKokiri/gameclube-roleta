@@ -48,7 +48,7 @@ h1 {
   height: 100%;
   border-radius: 50%;
   box-shadow: 0 0 0 8px #2a2e38, 0 12px 40px rgba(0,0,0,0.5);
-  transition: transform 5.5s cubic-bezier(0.12, 0.72, 0.1, 1);
+  transition: transform 30s cubic-bezier(0.12, 0.72, 0.1, 1);
 }
 .pointer {
   position: absolute;
@@ -78,7 +78,7 @@ h1 {
   font-size: 1.05rem;
   font-weight: 700;
   color: #1a1a1a;
-  background: linear-gradient(135deg, #ad09df, #424242);
+  background: linear-gradient(135deg, var(--accent2), #ffb347);
   border: none;
   border-radius: 30px;
   cursor: pointer;
@@ -109,53 +109,24 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-#optionsList {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 14px;
-  max-height: 320px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-.option-row {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-.option-row input[type=text] {
-  flex: 1;
-  padding: 8px 10px;
+#optionsText {
+  width: 100%;
+  min-height: 220px;
+  padding: 12px 14px;
   background: #12141a;
   border: 1px solid #333743;
-  border-radius: 8px;
+  border-radius: 10px;
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  font-family: 'Consolas', 'Courier New', monospace;
+  line-height: 1.6;
+  resize: vertical;
 }
-.option-row input[type=text]:focus { outline: 2px solid var(--accent); }
-.swatch {
-  width: 16px; height: 16px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-.removeBtn {
-  background: none;
-  border: none;
+#optionsText:focus { outline: 2px solid var(--accent); }
+small.hint {
+  display: block;
+  margin-top: 10px;
   color: var(--muted);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 6px;
+  font-size: 0.78rem;
+  line-height: 1.4;
 }
-.removeBtn:hover { color: var(--accent); background: rgba(255,77,109,0.1); }
-.addBtn {
-  width: 100%;
-  padding: 10px;
-  background: #262a35;
-  border: 1px dashed #454b5a;
-  border-radius: 8px;
-  color: var(--muted);
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-.addBtn:hover { border-color: var(--accent); color: var(--text); }

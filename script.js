@@ -109,7 +109,7 @@ function spin() {
   const drawAngle = winnerIndex * sliceAngleDeg + offsetInSlice;
   const targetAngle = ((270 - drawAngle) % 360 + 360) % 360;
 
-  const extraSpins = 25 + secureRandomInt(15);
+  const extraSpins = 25 + secureRandomInt(15); // 25 a 39 voltas completas — mais giros pra preencher os 30s direito
   const finalRotation = currentRotation + extraSpins * 360 + ((targetAngle - (currentRotation % 360) + 360) % 360);
 
   canvas.style.transform = `rotate(${finalRotation}deg)`;

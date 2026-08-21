@@ -1,4 +1,4 @@
-const COLORS = ['#442b7b','#c9d971','#542583','#efeeee','#542583'];
+const COLORS = ['#542583','#efeeee'];
 
 let options = ['Opção 1', 'Opção 2', 'Opção 3', 'Opção 4'];
 

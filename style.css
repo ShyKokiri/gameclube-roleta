@@ -1,7 +1,7 @@
 :root {
   --bg: #14161c;
   --panel: #1d2028;
-  --accent: #ff4d6d;
+  --accent: #fa0633;
   --accent2: #ffd166;
   --text: #f4f4f6;
   --muted: #8b8f9c;
@@ -23,6 +23,13 @@ h1 {
   margin-bottom: 24px;
   letter-spacing: 0.5px;
 }
+
+.logo {
+  width: 30vh;
+  height: auto;
+  align-self: left;
+}
+
 .layout {
   display: flex;
   gap: 40px;
@@ -31,6 +38,8 @@ h1 {
   align-items: flex-start;
   max-width: 1000px;
   width: 100%;
+  margin-top: 5vh;
+  gap:10vw;
 }
 .wheel-area {
   display: flex;
@@ -59,7 +68,7 @@ h1 {
   height: 0;
   border-left: 16px solid transparent;
   border-right: 16px solid transparent;
-  border-top: 28px solid var(--accent2);
+  border-top: 28px solid var(--accent);
   z-index: 5;
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
 }
@@ -67,7 +76,7 @@ h1 {
   position: absolute;
   top: 50%; left: 50%;
   width: 22px; height: 22px;
-  background: var(--accent2);
+  background: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 0 5px var(--panel), 0 2px 8px rgba(0,0,0,0.5);
@@ -77,23 +86,56 @@ h1 {
   padding: 14px 36px;
   font-size: 1.05rem;
   font-weight: 700;
-  color: #1a1a1a;
-  background: linear-gradient(135deg, var(--accent2), #ffb347);
+  color: #000000;
+  background: linear-gradient(135deg, var(--text), #542583);
   border: none;
   border-radius: 30px;
   cursor: pointer;
   letter-spacing: 0.5px;
-  box-shadow: 0 6px 18px rgba(255, 209, 102, 0.3);
+  margin-top: 5vh;
+  /* box-shadow: 0 6px 18px rgba(255, 209, 102, 0.3); */
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-#spinBtn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(255, 209, 102, 0.4); }
+/* box-shadow: 0 10px 22px rgba(255, 209, 102, 0.4); */
+#spinBtn:hover:not(:disabled) { transform: translateY(-2px);}
 #spinBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+#confettiCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 50;
+}
 .result {
   min-height: 28px;
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--accent2);
   text-align: center;
+}
+.result.led {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  padding: 10px 6px;
+  letter-spacing: 2px;
+  color: #00e5ff;
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor;
+  animation: ledHue 2s linear infinite, ledFlicker 0.12s steps(2) infinite;
+}
+@keyframes ledHue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+@keyframes ledScroll {
+  0% { background-position: 0% 0; }
+  100% { background-position: 400% 0; }
+}
+@keyframes ledFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.88; }
 }
 .panel {
   background: var(--panel);
@@ -123,10 +165,49 @@ h1 {
   resize: vertical;
 }
 #optionsText:focus { outline: 2px solid var(--accent); }
-small.hint {
-  display: block;
-  margin-top: 10px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.4;
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 11, 15, 0.72);
+  backdrop-filter: blur(3px);
+  align-items: center;
+  justify-content: center;
+  z-index: 70;
 }
+.modal-overlay.open { display: flex; }
+.modal-box {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid #333743;
+  border-radius: 20px;
+  padding: 48px 56px;
+  text-align: center;
+  box-shadow: 0 24px 70px rgba(0,0,0,0.55);
+  animation: modalPopIn 0.35s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  max-width: 90vw;
+}
+@keyframes modalPopIn {
+  0% { opacity: 0; transform: scale(0.75) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.modal-close:hover { color: var(--accent); background: rgba(250,6,51,0.1); }

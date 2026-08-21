@@ -3,11 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Roleta Sorteadora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>🎯 Roleta Sorteadora</h1>
+<canvas id="confettiCanvas"></canvas>
+
+<img src="logo.png" alt="Roleta Sorteadora" class="logo">
+<h1>🎯 Roleta Sorteadora do Jogo do Mês</h1>
 
 <div class="layout">
   <div class="wheel-area">
@@ -17,12 +23,19 @@
       <div class="hub"></div>
     </div>
     <button id="spinBtn">GIRAR</button>
-    <div class="result" id="result"></div>
   </div>
 
   <div class="panel">
     <h2>Opções da roleta</h2>
     <textarea id="optionsText" rows="10" spellcheck="false"></textarea>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resultModal">
+  <div class="modal-box">
+    <button class="modal-close" id="modalCloseBtn" title="Fechar">✕</button>
+    <div class="modal-label">O resultado é</div>
+    <div class="result" id="result"></div>
   </div>
 </div>
 

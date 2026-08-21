@@ -1,4 +1,4 @@
-const COLORS = ['#ff4d6d','#ffd166','#06d6a0','#4cc9f0','#9d4edd','#f77f00','#ef476f','#118ab2','#83c5be','#e76f51'];
+const COLORS = ['#442b7b','#c9d971','#542583','#efeeee','#542583'];
 
 let options = ['Opção 1', 'Opção 2', 'Opção 3', 'Opção 4'];
 
@@ -7,6 +7,8 @@ const ctx = canvas.getContext('2d');
 const optionsTextEl = document.getElementById('optionsText');
 const spinBtn = document.getElementById('spinBtn');
 const resultEl = document.getElementById('result');
+const resultModal = document.getElementById('resultModal');
+const modalCloseBtn = document.getElementById('modalCloseBtn');
 
 let currentRotation = 0; // degrees, accumulated
 let spinning = false;
@@ -84,6 +86,68 @@ function secureRandomInt(maxExclusive) {
   return val % range;
 }
 
+// --- Confete ---
+function launchConfetti() {
+  const confettiCanvas = document.getElementById('confettiCanvas');
+  const cctx = confettiCanvas.getContext('2d');
+  confettiCanvas.width = window.innerWidth;
+  confettiCanvas.height = window.innerHeight;
+
+  const colors = ['#ff4d6d', '#ffd166', '#06d6a0', '#4cc9f0', '#9d4edd', '#f77f00'];
+  const particleCount = 1060;
+  const particles = [];
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push({
+      x: confettiCanvas.width / 2 + (secureRandom() - 0.5) * 260,
+      y: confettiCanvas.height * 0.25,
+      vx: (secureRandom() - 0.5) * 13,
+      vy: secureRandom() * -11 - 4,
+      size: secureRandom() * 8 + 4,
+      color: colors[Math.floor(secureRandom() * colors.length)],
+      rotation: secureRandom() * 360,
+      rotationSpeed: (secureRandom() - 0.5) * 14,
+      shape: secureRandom() > 0.5 ? 'circle' : 'rect'
+    });
+  }
+
+  const gravity = 0.35;
+  const duration = 3200; // 3.2s de festa
+  const startTime = performance.now();
+
+  function frame(now) {
+    const elapsed = now - startTime;
+    cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+
+    particles.forEach(p => {
+      p.vy += gravity * 0.06;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rotation += p.rotationSpeed;
+
+      cctx.save();
+      cctx.translate(p.x, p.y);
+      cctx.rotate(p.rotation * Math.PI / 180);
+      cctx.fillStyle = p.color;
+      if (p.shape === 'circle') {
+        cctx.beginPath();
+        cctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+        cctx.fill();
+      } else {
+        cctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      }
+      cctx.restore();
+    });
+
+    if (elapsed < duration) {
+      requestAnimationFrame(frame);
+    } else {
+      cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
 function spin() {
   if (spinning) return;
   syncOptionsFromTextarea(); // garante que pega o texto mais recente antes de girar
@@ -94,6 +158,8 @@ function spin() {
   spinning = true;
   spinBtn.disabled = true;
   resultEl.textContent = '';
+  resultEl.classList.remove('led');
+  resultModal.classList.remove('open');
 
   const sliceAngleDeg = 360 / options.length;
 
@@ -120,9 +186,17 @@ function spin() {
     spinBtn.disabled = false;
     const winner = options[winnerIndex];
     resultEl.textContent = '🎉 ' + winner;
-    resultEl.style.color = COLORS[winnerIndex % COLORS.length];
+    resultEl.classList.add('led');
+    resultModal.classList.add('open');
+    launchConfetti();
   }, 30200);
 }
+
+// --- Fechar o modal (botão X ou clicando fora da caixa) ---
+modalCloseBtn.addEventListener('click', () => resultModal.classList.remove('open'));
+resultModal.addEventListener('click', (e) => {
+  if (e.target === resultModal) resultModal.classList.remove('open');
+});
 
 spinBtn.addEventListener('click', spin);
 

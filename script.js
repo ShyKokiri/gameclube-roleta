@@ -185,7 +185,7 @@ function spin() {
     spinning = false;
     spinBtn.disabled = false;
     const winner = options[winnerIndex];
-    resultEl.textContent = '🎉 ' + winner;
+    resultEl.textContent = winner;
     resultEl.classList.add('led');
     resultModal.classList.add('open');
     launchConfetti();

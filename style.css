@@ -130,8 +130,7 @@ h1 {
   padding: 10px 6px;
   letter-spacing: 2px;
   color: #fdfdfd;
-  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor;
-  animation: ledHue 2s linear infinite, ledFlicker 0.12s steps(2) infinite;
+  animation: ledHue 2s linear infinite, ledFlicker 0.5s steps(4) infinite;
 }
 @keyframes ledHue {
   0% { filter: hue-rotate(0deg); }

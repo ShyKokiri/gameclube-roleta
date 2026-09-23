@@ -129,7 +129,7 @@ h1 {
   line-height: 1.6;
   padding: 10px 6px;
   letter-spacing: 2px;
-  color: #00e5ff;
+  color: #fdfdfd;
   text-shadow: 0 0 6px currentColor, 0 0 16px currentColor;
   animation: ledHue 2s linear infinite, ledFlicker 0.12s steps(2) infinite;
 }
